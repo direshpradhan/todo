@@ -18,6 +18,15 @@ export const TodoItem = ({ task }) => {
     }
   };
 
+  const deleteTask = async (id) => {
+    const newTaskData = tasks.filter((task) => task.id !== id);
+    const response = await axios.delete(`http://localhost:3001/todos/${id}`);
+
+    if (response.status === 200) {
+      dispatch({ type: "DELETE_TASK", payload: newTaskData });
+    }
+  };
+
   return (
     <Grid item sx={{ width: "100%" }}>
       <Card
@@ -56,6 +65,7 @@ export const TodoItem = ({ task }) => {
             variant="outlined"
             sx={{ margin: "1rem 0" }}
             disabled={!task.completed}
+            onClick={() => deleteTask(task.id)}
           >
             Delete
           </Button>

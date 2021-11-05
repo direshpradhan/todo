@@ -17,8 +17,10 @@ export const reducer = (state, action) => {
         }
         return task;
       });
-      console.log(newData);
       return { ...state, tasks: newData };
+
+    case "DELETE_TASK":
+      return { ...state, tasks: action.payload };
 
     default:
       break;

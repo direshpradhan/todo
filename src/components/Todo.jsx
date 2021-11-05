@@ -36,9 +36,9 @@ export const Todo = () => {
 
   return (
     <>
-      <h2>Todo</h2>
+      <h1>Todo App</h1>
       <Button variant="contained" onClick={() => setShowModal(true)}>
-        Add Task
+        Create Task
       </Button>
       <Container maxWidth="md">
         <Grid container>
