@@ -1,7 +1,23 @@
 import { Button, Card, Container, Grid, Typography } from "@mui/material";
+import axios from "axios";
 import React from "react";
+import { useData } from "../context/DataContext";
 
 export const TodoItem = ({ task }) => {
+  const { tasks, dispatch } = useData();
+
+  const completeTask = async (id) => {
+    const task = tasks.find((task) => task.id === id);
+    const updatedTask = { ...task, completed: !task.completed };
+    const response = await axios.put(
+      `http://localhost:3001/todos/${id}`,
+      updatedTask
+    );
+    if (response.status === 200) {
+      dispatch({ type: "TOGGLE_TASK_STATUS", payload: updatedTask });
+    }
+  };
+
   return (
     <Grid item sx={{ width: "100%" }}>
       <Card
@@ -13,14 +29,28 @@ export const TodoItem = ({ task }) => {
         }}
       >
         <Container sx={{ width: "70%" }}>
-          <Typography variant="h5">{task.title}</Typography>
-          <Typography variant="body1">{task.description}</Typography>
+          <Typography
+            variant="h5"
+            sx={task.completed && { textDecoration: "line-through" }}
+          >
+            {task.title}
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={task.completed && { textDecoration: "line-through" }}
+          >
+            {task.description}
+          </Typography>
         </Container>
         <Container sx={{ width: "30%" }}>
           {task.completed ? (
-            <Button variant="contained">Mark as Incomplete</Button>
+            <Button variant="contained" onClick={() => completeTask(task.id)}>
+              Mark as Incomplete
+            </Button>
           ) : (
-            <Button variant="contained">Mark as complete</Button>
+            <Button variant="contained" onClick={() => completeTask(task.id)}>
+              Mark as complete
+            </Button>
           )}
           <Button
             variant="outlined"

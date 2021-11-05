@@ -34,7 +34,7 @@
       "id": 6,
       "title": "Demo",
       "description": "This is a demo task",
-      "completed": false
+      "completed": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { Button, TextField, Container, Grid } from "@mui/material";
+import { Button, TextField, Container, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { useData } from "../context/DataContext";
@@ -8,25 +8,30 @@ export const Todo = () => {
   const [showModal, setShowModal] = useState(false);
   const [inputTitle, setInputTitle] = useState("");
   const [inputDesc, setInputDesc] = useState("");
+  const [error, setError] = useState(false);
   const { dispatch, tasks } = useData();
 
   const addTask = async () => {
-    const newTask = {
-      id: tasks[0].id + 1,
-      title: inputTitle,
-      description: inputDesc,
-      completed: false,
-    };
-    const response = await axios.post("http://localhost:3001/todos", newTask);
-    if (response.status === 201) {
-      dispatch({
-        type: "ADD_TASK",
-        payload: newTask,
-      });
+    if (inputTitle !== "" && inputDesc !== "") {
+      const newTask = {
+        id: tasks[0].id + 1,
+        title: inputTitle,
+        description: inputDesc,
+        completed: false,
+      };
+      const response = await axios.post("http://localhost:3001/todos", newTask);
+      if (response.status === 201) {
+        dispatch({
+          type: "ADD_TASK",
+          payload: newTask,
+        });
+      }
+      setShowModal(false);
+      setInputTitle("");
+      setInputDesc("");
+    } else {
+      setError(true);
     }
-    setShowModal(false);
-    setInputTitle("");
-    setInputDesc("");
   };
 
   return (
@@ -71,6 +76,22 @@ export const Todo = () => {
               event.stopPropagation();
             }}
           >
+            {error && inputDesc === "" && inputTitle !== "" && (
+              <Typography variant="body1" sx={{ color: "red" }}>
+                Enter Description !!
+              </Typography>
+            )}
+            {error && inputTitle === "" && inputDesc !== "" && (
+              <Typography variant="body1" sx={{ color: "red" }}>
+                Enter Title !!
+              </Typography>
+            )}
+            {error && inputTitle === "" && inputDesc === "" && (
+              <Typography variant="body1" sx={{ color: "red" }}>
+                Enter Title!!
+              </Typography>
+            )}
+
             <TextField
               id="outlined-basic"
               placeholder="Title"

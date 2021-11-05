@@ -9,6 +9,17 @@ export const reducer = (state, action) => {
 
     case "ADD_TASK":
       return { ...state, tasks: [action.payload, ...state.tasks] };
+
+    case "TOGGLE_TASK_STATUS":
+      const newData = state.tasks.map((task) => {
+        if (task.id === action.payload.id) {
+          return action.payload;
+        }
+        return task;
+      });
+      console.log(newData);
+      return { ...state, tasks: newData };
+
     default:
       break;
   }
