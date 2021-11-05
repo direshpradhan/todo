@@ -17,7 +17,7 @@ export const DataProvider = ({ children }) => {
   console.log(state.tasks);
 
   return (
-    <DataContext.Provider value={{ state, dispatch }}>
+    <DataContext.Provider value={{ state, dispatch, tasks: state.tasks }}>
       {children}
     </DataContext.Provider>
   );
