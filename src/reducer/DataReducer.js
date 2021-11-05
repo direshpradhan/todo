@@ -7,6 +7,8 @@ export const reducer = (state, action) => {
     case "INITIALIZE_DATA":
       return { ...state, tasks: action.payload };
 
+    case "ADD_TASK":
+      return { ...state, tasks: [action.payload, ...state.tasks] };
     default:
       break;
   }

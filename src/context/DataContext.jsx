@@ -10,11 +10,9 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
     (async function () {
       const response = await axios.get("http://localhost:3001/todos");
-      dispatch({ type: "INITIALIZE_DATA", payload: response.data });
+      dispatch({ type: "INITIALIZE_DATA", payload: response.data.reverse() });
     })();
   }, []);
-
-  console.log(state.tasks);
 
   return (
     <DataContext.Provider value={{ state, dispatch, tasks: state.tasks }}>
